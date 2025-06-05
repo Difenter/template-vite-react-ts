@@ -1,11 +1,22 @@
 trigger:
-- main
+  branches:
+    include:
+      - master
 
-pool:
-  name: MyMacAgentPool
+stages:
+  - stage: Source
+    displayName: 'Fetch source code'
+    steps:
+      - checkout: self
 
-jobs:
-- job: MyMacJob
-  steps:
-    - script: echo "Hello from my MacBook agent!"
-      displayName: "Say Hello"
+  - stage: Build
+    displayName: 'Build application'
+    dependsOn: Source
+    steps:
+      - task: UseNode@1
+        inputs:
+          version: '16.x'
+      - script: |
+          npm install
+          npm run build
+        displayName: 'Build app'
