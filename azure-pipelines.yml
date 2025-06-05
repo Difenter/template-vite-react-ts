@@ -6,8 +6,6 @@ trigger:
 pool:
   name: 'MyMacAgentPool'
 
-# jobs:
-# - job: MyMacJob
 steps:
 - task: NodeTool@0
   inputs:
@@ -24,3 +22,20 @@ steps:
     PathtoPublish: 'dist'
     ArtifactName: 'drop'
   displayName: 'Publish build artifacts'
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'MyServiceConnection'  # Azure Service Connection
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      echo "Start deploying to Blob Storage..."
+      az storage blob upload-batch \
+        --account-name $STORAGE_NAME \
+        --destination '$web' \
+        --source './dist' \
+        --auth-mode key \
+        --account-key $STORAGE_KEY
+  env:
+    STORAGE_NAME: $(STORAGEACCOUNTNAME)
+    STORAGE_KEY: $(STORAGEKEY)
