@@ -4,7 +4,7 @@ trigger:
       - master
 
 pool:
-  vmImage: 'MyMacAgentPool'
+  name: 'MyMacAgentPool'
 
 # jobs:
 # - job: MyMacJob
