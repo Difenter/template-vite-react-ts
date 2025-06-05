@@ -23,3 +23,20 @@ steps:
     ArtifactName: 'drop'
   displayName: 'Publish build artifacts'
 
+- task: AzureCLI@2
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'test_subscription(1a92881a-3fc0-4e35-bd43-2e46b82380a6)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      echo "Start deploying to Blob Storage..."
+      az storage blob upload-batch \
+        --account-name $STORAGE_NAME \
+        --destination '$web' \
+        --source './dist' \
+        --auth-mode key \
+        --account-key $STORAGE_KEY
+  env:
+    STORAGE_NAME: $(STORAGEACCOUNTNAME)
+    STORAGE_KEY: $(STORAGEKEY)
