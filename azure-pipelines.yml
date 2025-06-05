@@ -6,10 +6,12 @@ trigger:
 pool:
   vmImage: 'MyMacAgentPool'
 
+# jobs:
+# - job: MyMacJob
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '18.x' # Use your Node.js version
+    versionSpec: '18.x'
   displayName: 'Install Node.js'
 
 - script: |
@@ -19,10 +21,6 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: 'dist'  # adjust to your build output folder
+    PathtoPublish: 'dist'
     ArtifactName: 'drop'
   displayName: 'Publish build artifacts'
-
-# steps:
-#   - script: echo "Hello from my MacBook agent!"
-#     displayName: "Say Hello"
