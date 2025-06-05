@@ -29,8 +29,7 @@ trigger:
 pool:
   name: MyMacAgentPool
 
-jobs:
-- job: MyMacJob
-  steps:
-    - script: echo "Hello from my MacBook agent!"
-      displayName: "Say Hello"
+
+steps:
+  - script: echo "Hello from my MacBook agent!"
+    displayName: "Say Hello"
