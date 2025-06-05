@@ -3,20 +3,19 @@ trigger:
     include:
       - master
 
-stages:
-  - stage: Source
-    displayName: 'Fetch source code'
-    steps:
-      - checkout: self
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x' # Use your Node.js version
+  displayName: 'Install Node.js'
 
-  - stage: Build
-    displayName: 'Build application'
-    dependsOn: Source
-    steps:
-      - task: UseNode@1
-        inputs:
-          version: '16.x'
-      - script: |
-          npm install
-          npm run build
-        displayName: 'Build app'
+- script: |
+    npm install
+    npm run build
+  displayName: 'Install dependencies and build'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'dist'  # adjust to your build output folder
+    ArtifactName: 'drop'
+  displayName: 'Publish build artifacts'
