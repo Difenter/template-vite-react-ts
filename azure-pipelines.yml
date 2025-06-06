@@ -1,0 +1,34 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pool:
+  name: 'MyMacAgentPool'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+    npm run build
+  displayName: 'Install dependencies and build'
+
+- task: AzureCLI@2
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: '$(SUBSCRIPTION)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      echo "Start deploying to Blob Storage..."
+      az storage blob upload-batch \
+        --account-name $(ACCOUNT_NAME) \
+        --destination '$web' \
+        --source $(SOURCE) \
+        --auth-mode key \
+        --account-key $(ACCOUNT_KEY) \
+        --overwrite
