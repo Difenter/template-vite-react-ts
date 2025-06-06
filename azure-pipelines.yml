@@ -32,11 +32,9 @@ steps:
     inlineScript: |
       echo "Start deploying to Blob Storage..."
       az storage blob upload-batch \
-        --account-name $STORAGE_NAME \
+        --account-name $(STORAGEACCOUNTNAME) \
         --destination '$web' \
-        --source './dist' \
+        --source ./dist \
         --auth-mode key \
-        --account-key $STORAGE_KEY
-  env:
-    STORAGE_NAME: $(STORAGEACCOUNTNAME)
-    STORAGE_KEY: $(STORAGEKEY)
+        --account-key $(STORAGEKEY) \
+        --overwrite
