@@ -28,11 +28,10 @@ steps:
       az storage blob upload-batch \
         --account-name $ACCOUNT_NAME \
         --destination '$web' \
-        --source $SOURCE \
+        --source $(SOURCE) \
         --auth-mode key \
         --account-key $ACCOUNT_KEY \
         --overwrite
   env:
     ACCOUNT_NAME: $(ACCOUNT_NAME)
-    SOURCE: $(SOURCE)
     ACCOUNT_KEY: $(ACCOUNT_KEY)
