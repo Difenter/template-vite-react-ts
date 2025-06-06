@@ -17,24 +17,22 @@ steps:
     npm run build
   displayName: 'Install dependencies and build'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: 'dist'
-    ArtifactName: 'drop'
-  displayName: 'Publish build artifacts'
-
 - task: AzureCLI@2
   inputs:
     ConnectionType: 'AzureRM'
-    azureSubscription: 'test_subscription(1a92881a-3fc0-4e35-bd43-2e46b82380a6)'
+    azureSubscription: '$(SUBSCRIPTION)'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
       echo "Start deploying to Blob Storage..."
       az storage blob upload-batch \
-        --account-name $(STORAGEACCOUNTNAME) \
+        --account-name $ACCOUNT_NAME \
         --destination '$web' \
-        --source ./dist \
+        --source $SOURCE \
         --auth-mode key \
-        --account-key $(STORAGEKEY) \
+        --account-key $ACCOUNT_KEY \
         --overwrite
+  env:
+    ACCOUNT_NAME: $(ACCOUNT_NAME)
+    SOURCE: $(SOURCE)
+    ACCOUNT_KEY: $(ACCOUNT_KEY)

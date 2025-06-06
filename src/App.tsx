@@ -28,7 +28,7 @@ function App() {
       <p className="read-the-docs" style={{ paddingBottom: '12px' }}>
         Click on the Vite and React logos to learn more
       </p>
-      <p>Version 0.0.1</p>
+      <p>Version 0.0.2</p>
     </>
   )
 }
